@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Archive Viewer</title>
+</head>
+<body>
+    <h1>Archive Debug Test</h1>
+    <div id="debug-info"></div>
+    <div id="archive-data"></div>
+    
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const archiveName = urlParams.get('archive');
+        
+        console.log('URL Search Params:', window.location.search);
+        console.log('Archive Name:', archiveName);
+        
+        document.getElementById('debug-info').innerHTML = `
+            <p><strong>URL:</strong> ${window.location.href}</p>
+            <p><strong>Search:</strong> ${window.location.search}</p>
+            <p><strong>Archive:</strong> ${archiveName}</p>
+        `;
+        
+        if (archiveName) {
+            // Test API call
+            const apiUrl = `${window.location.origin}/api/archive/${encodeURIComponent(archiveName)}`;
+            console.log('API URL:', apiUrl);
+            
+            fetch(apiUrl)
+                .then(response => {
+                    console.log('Response Status:', response.status);
+                    console.log('Response OK:', response.ok);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
+                    document.getElementById('archive-data').innerHTML = `
+                        <h3>API Response:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('archive-data').innerHTML = `
+                        <h3>Error:</h3>
+                        <p style="color: red;">${error.message}</p>
+                    `;
+                });
+        } else {
+            document.getElementById('archive-data').innerHTML = '<p style="color: red;">No archive parameter found</p>';
+        }
+    </script>
+</body>
+</html>

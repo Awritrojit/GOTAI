@@ -1,0 +1,162 @@
+{
+  "hypothesis": "Quantum computing will revolutionize cryptography within 5 years",
+  "total_nodes": 11,
+  "average_score": 0.390909090909091,
+  "max_score": 0.5,
+  "min_score": 0.38000000000000006,
+  "pruned_nodes": 0,
+  "explored_nodes": 1,
+  "max_depth": 1,
+  "average_depth": 0.9090909090909091,
+  "total_trajectories": 10,
+  "best_trajectory": {
+    "cumulative_score": 0.8800000000000001,
+    "path_length": 2,
+    "final_insight": "<think>\nOkay, the user wants a one-sentence outcome based on the statement \"Quantum computing will revolutionize cryptography within 5 years.\" The question is \"Why is this the case?\" So I need to explain why this statement is true.\n\nFirst, I should break down the statement. It says quantum computing will revolutionize cryptography in five years. The key factors here are quantum computing's capabilities and its impact on cryptography. Quantum computing uses superposition and entanglement, which are different from",
+    "final_score": 0.38000000000000006,
+    "path": [
+      {
+        "id": "cde0620a-c407-4e87-8811-e6170be25d23",
+        "text": "Quantum computing will revolutionize cryptography within 5 years",
+        "score": 0.5,
+        "depth": 0
+      },
+      {
+        "id": "1eb56f14-99d3-41c4-85cc-526f56809798",
+        "text": "<think>\nOkay, the user wants a one-sentence outcome based on the statement \"Quantum computing will revolutionize cryptography within 5 years.\" The question is \"Why is this the case?\" So I need to explain why this statement is true.\n\nFirst, I should break down the statement. It says quantum computing will revolutionize cryptography in five years. The key factors here are quantum computing's capabilities and its impact on cryptography. Quantum computing uses superposition and entanglement, which are different from",
+        "score": 0.38000000000000006,
+        "depth": 1
+      }
+    ]
+  },
+  "trajectory_analysis": [
+    {
+      "endpoint_id": "1eb56f14-99d3-41c4-85cc-526f56809798",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, the user wants a one-sentence outcome based on the statement \"Quantum computing will revolutionize cryptography within 5 years.\" The question is \"Why is this the case?\" So I need to explain why this statement is true.\n\nFirst, I should break down the statement. It says quantum computing will revolutionize cryptography in five years. The key factors here are quantum computing's capabilities and its impact on cryptography. Quantum computing uses superposition and entanglement, which are different from",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "ba66dd81-4201-4790-97a6-793219a52fe9",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, so the user wants me to generate a one-sentence outcome for the question \"What are the underlying assumptions?\" based on the given statement: \"Quantum computing will revolutionize cryptography within 5 years.\" Let me break this down.\n\nFirst, the statement is about quantum computing's potential impact on cryptography. The underlying assumption here might be that quantum computers can solve cryptographic problems exponentially faster, which is a key assumption in quantum computing. So the sentence should capture that assumption. The user",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "17299241-1014-407a-9c2a-ca6d7ec97c79",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, let's see. The user wants me to explain the statement \"Quantum computing will revolutionize cryptography within 5 years\" differently. So first, I need to rephrase that statement without using the same structure or meaning.\n\nThe original statement is a prediction about quantum computing leading to cryptography revolution in five years. To explain it differently, maybe use a different perspective or a different structure. Instead of saying it will revolutionize, maybe talk about how it will change the field. Also",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "0f9c9cdb-cace-4475-a839-085475c359aa",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, the user wants me to create a concise one-sentence outcome based on the statement: \"Quantum computing will revolutionize cryptography within 5 years.\" The question is asking for the primary consequence. So first, I need to identify the main consequence here.\n\nThe statement is about quantum computing leading to revolution in cryptography over five years. The key here is that quantum computing has the capability to break traditional encryption methods. So the primary consequence would be that cryptographic systems may become obsolete within five",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "43a939ba-64dc-4e3d-a320-cfedcecf4f24",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, let's break down the problem. The user wants me to generate a concise, one-sentence outcome for the question \"Where would this have the biggest impact?\" based on the given statement: \"Quantum computing will revolutionize cryptography within 5 years.\"\n\nFirst, I need to understand what the statement is saying. It's stating that quantum computing will revolutionize cryptography in five years. The question is asking where this would have the biggest impact. So, the key here is to",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "980d7152-4de0-424c-9962-25e11a5b3be6",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, let's see. The user wants a concise one-sentence outcome for the question \"Why is this the case?\" based on the statement provided. The statement says, \"Quantum computing will revolutionize cryptography within 5 years.\"\n\nFirst, I need to break down the statement. The key elements here are quantum computing and its revolution in cryptography. The time frame is within five years. The question is asking why this is the case, so the answer should explain the reason that quantum",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "c896daf7-a167-4ecd-bbf7-08aeb1c28e7d",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, the user wants me to generate a concise, one-sentence outcome for the question \"What are the underlying assumptions?\" given the statement about quantum computing revolutionizing cryptography in 5 years.\n\nFirst, I need to break down the statement. The key points here are quantum computing and its revolution in cryptography over 5 years. The underlying assumptions would be the logical basis for this claim. \n\nAssuming that quantum computing can solve classical encryption problems, which is the assumption. Also, the",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "86d13c5b-e0c6-4f78-b9c8-a964c1ba9ff3",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, so the user wants me to explain \"Quantum computing will revolutionize cryptography within 5 years\" differently. Let me start by understanding what they're asking for. They want a concise, one-sentence outcome for the question \"How can this be explained differently?\" based on the given statement.\n\nFirst, I need to break down the original statement. It's stating that quantum computing will revolutionize cryptography in five years. The key here is the revolution and the timeframe. To explain",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "684edfeb-66c6-4a9e-ba77-4e8bc002b34f",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, the user wants me to generate a concise, one-sentence outcome for the question \"What is the primary consequence of this?\" based on the given statement. The statement is \"Quantum computing will revolutionize cryptography within 5 years.\"\n\nFirst, I need to break down the key elements of the statement. The main subject is quantum computing, and the result is revolutionizing cryptography. The time frame is within 5 years. The consequence should be the main result or outcome of this",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    },
+    {
+      "endpoint_id": "5f4fed79-3c32-4c7f-86ec-6be3c6b8127a",
+      "cumulative_score": 0.8800000000000001,
+      "final_score": 0.38000000000000006,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "<think>\nOkay, let's see. The user wants a one-sentence outcome for the question \"Where would this have the biggest impact?\" based on the statement that \"Quantum computing will revolutionize cryptography within 5 years.\"\n\nFirst, I need to understand what the statement is saying. It says quantum computing will revolutionize cryptography in five years. The question is about where this would have the biggest impact. So the key here is to identify the biggest impact area.\n\nQuantum computing is a big",
+      "path_scores": [
+        0.5,
+        0.38000000000000006
+      ]
+    }
+  ],
+  "score_distribution": {
+    "high": 0,
+    "medium": 1,
+    "low": 10,
+    "high_percentage": 0.0,
+    "medium_percentage": 9.090909090909092,
+    "low_percentage": 90.9090909090909
+  }
+}

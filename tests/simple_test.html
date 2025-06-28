@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Graph Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        svg { border: 1px solid black; }
+        .node { fill: red; stroke: black; stroke-width: 2px; }
+        .link { stroke: blue; stroke-width: 2px; }
+    </style>
+</head>
+<body>
+    <h1>Simple D3 Test</h1>
+    <svg id="test-svg" width="400" height="300"></svg>
+    
+    <script>
+        console.log('D3 version:', d3.version);
+        
+        const svg = d3.select('#test-svg');
+        
+        // Add a simple circle
+        svg.append('circle')
+            .attr('cx', 100)
+            .attr('cy', 100)
+            .attr('r', 20)
+            .attr('fill', 'red');
+            
+        // Add text
+        svg.append('text')
+            .attr('x', 100)
+            .attr('y', 150)
+            .text('Test Circle')
+            .attr('text-anchor', 'middle');
+            
+        console.log('Simple test completed');
+    </script>
+</body>
+</html>

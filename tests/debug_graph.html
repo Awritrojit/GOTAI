@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Debug</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .node { cursor: pointer; }
+        .link { stroke: #999; stroke-opacity: 0.6; }
+        .node-label { font-size: 10px; text-anchor: middle; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <h1>Graph Visualization Debug</h1>
+    <div id="graph-container">
+        <svg id="graph-svg" width="800" height="600" style="border: 1px solid #ccc;"></svg>
+    </div>
+    
+    <button onclick="testGraph()">Test Graph</button>
+    <button onclick="checkAPI()">Check API</button>
+    
+    <div id="output"></div>
+    
+    <script src="/static/js/graph.js"></script>
+    <script>
+        function log(message) {
+            document.getElementById('output').innerHTML += '<div>' + message + '</div>';
+            console.log(message);
+        }
+        
+        function testGraph() {
+            log('Testing graph visualization...');
+            
+            try {
+                // Test data
+                const testData = {
+                    nodes: [
+                        {id: "1", text: "Root", score: 0.8, cumulative_score: 0.8, depth: 0, is_pruned: false},
+                        {id: "2", text: "Child 1", score: 0.6, cumulative_score: 1.4, depth: 1, is_pruned: false, parent_id: "1"},
+                        {id: "3", text: "Child 2", score: 0.7, cumulative_score: 1.5, depth: 1, is_pruned: false, parent_id: "1"}
+                    ],
+                    links: [
+                        {source: "1", target: "2", value: 0.6},
+                        {source: "1", target: "3", value: 0.7}
+                    ]
+                };
+                
+                log('Creating GraphVisualizer...');
+                const graph = new GraphVisualizer('graph-svg');
+                log('GraphVisualizer created successfully');
+                
+                log('Updating graph with test data...');
+                graph.update(testData);
+                log('Graph updated successfully');
+                
+                // Check if nodes were created
+                const svg = d3.select('#graph-svg');
+                const nodes = svg.selectAll('.node');
+                const links = svg.selectAll('.link');
+                log('Nodes in DOM: ' + nodes.size());
+                log('Links in DOM: ' + links.size());
+                
+            } catch (error) {
+                log('Error: ' + error.message);
+                console.error(error);
+            }
+        }
+        
+        async function checkAPI() {
+            try {
+                log('Checking API...');
+                const response = await fetch('/api/graph_data');
+                const data = await response.json();
+                log('API Response: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('API Error: ' + error.message);
+            }
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', function() {
+            log('Page loaded. D3 version: ' + d3.version);
+            testGraph();
+        });
+    </script>
+</body>
+</html>

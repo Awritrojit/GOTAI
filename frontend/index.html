@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOTAI: Graph of Thoughts</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GOTAI: Graph of Thoughts</h1>
+            <p>Autonomous AI reasoning framework that explores branching trajectories of thought</p>
+        </header>
+
+        <div class="controls">
+            <div class="input-section">
+                <label for="run-name-input">Name of the Run:</label>
+                <input type="text" id="run-name-input" placeholder="e.g., AI Education Impact Analysis" maxlength="50">
+                
+                <label for="hypothesis-input">Enter your hypothesis:</label>
+                <textarea id="hypothesis-input" placeholder="e.g., Artificial intelligence will fundamentally change the nature of work in the 21st century"></textarea>
+                
+                <div class="advanced-settings">
+                    <h4>Advanced Settings</h4>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="max-depth-input">Max Depth:</label>
+                            <input type="number" id="max-depth-input" placeholder="3" min="1" max="10" title="Maximum exploration depth (default: 3)">
+                        </div>
+                        <div class="setting-item">
+                            <label for="max-nodes-input">Max Nodes:</label>
+                            <input type="number" id="max-nodes-input" placeholder="50" min="5" max="200" title="Maximum total nodes (default: 50)">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="start-btn" class="btn btn-primary">Start Analysis</button>
+                    <button id="stop-btn" class="btn btn-secondary" disabled>Stop & Archive</button>
+                    <button id="clear-btn" class="btn btn-tertiary">Clear Data</button>
+                </div>
+            </div>
+            
+            <div class="status-section">
+                <div class="status-item">
+                    <span class="label">Status:</span>
+                    <span id="status" class="value">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Total Nodes:</span>
+                    <span id="node-count" class="value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Best Score:</span>
+                    <span id="best-score" class="value">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="graph-section">
+                <h3>Reasoning Graph</h3>
+                <div id="graph-container">
+                    <svg id="graph-svg"></svg>
+                </div>
+                <div class="graph-controls">
+                    <button id="reset-zoom" class="btn btn-small">Reset Zoom</button>
+                    <label>
+                        <input type="checkbox" id="show-pruned" checked> Show Pruned Nodes
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="node-inspector">
+                    <h3>Node Inspector</h3>
+                    <div id="node-details">
+                        <p class="placeholder">Click on a node to see its details</p>
+                    </div>
+                </div>
+
+                <div class="analysis-panel">
+                    <h3>Analysis Results</h3>
+                    <div id="analysis-results">
+                        <p class="placeholder">Analysis results will appear here</p>
+                    </div>
+                    <button id="get-analysis" class="btn btn-small">Get Analysis</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="archive-section">
+            <h3>Archived Runs</h3>
+            <div id="archive-list">
+                <p class="placeholder">Archived runs will appear here</p>
+            </div>
+            <button id="refresh-archives" class="btn btn-small">Refresh Archives</button>
+        </div>
+
+        <div class="legend">
+            <h4>Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>High Score (>0.7)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFC107;"></div>
+                <span>Medium Score (0.4-0.7)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #F44336;"></div>
+                <span>Low Score (<0.4)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color pruned"></div>
+                <span>Pruned Node</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/graph.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

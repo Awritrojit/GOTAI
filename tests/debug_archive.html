@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Archive Viewer</title>
+</head>
+<body>
+    <h1>Debug Archive Viewer</h1>
+    <div id="debug-output"></div>
+    
+    <script>
+        function log(message) {
+            const output = document.getElementById('debug-output');
+            output.innerHTML += '<p>' + message + '</p>';
+            console.log(message);
+        }
+        
+        // Test URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const archiveName = urlParams.get('archive');
+        log('Archive name from URL: ' + (archiveName || 'NOT FOUND'));
+        
+        // Test API call
+        if (archiveName) {
+            const baseURL = window.location.origin;
+            const apiUrl = `${baseURL}/api/archive/${encodeURIComponent(archiveName)}`;
+            log('API URL: ' + apiUrl);
+            
+            fetch(apiUrl)
+                .then(response => {
+                    log('Response status: ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    log('Response data success: ' + data.success);
+                    log('Response data: ' + JSON.stringify(data, null, 2));
+                })
+                .catch(error => {
+                    log('Error: ' + error.message);
+                });
+        } else {
+            log('No archive parameter found in URL');
+        }
+    </script>
+</body>
+</html>

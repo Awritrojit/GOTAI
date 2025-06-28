@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffe6e6; color: #d00; }
+        .success { background: #e6ffe6; color: #060; }
+    </style>
+</head>
+<body>
+    <h1>Archive Viewer Debug Test</h1>
+    <div id="debug-output"></div>
+    <div id="archive-content"></div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/graph.js"></script>
+    <script>
+        function debug(message, type = 'info') {
+            const output = document.getElementById('debug-output');
+            const div = document.createElement('div');
+            div.className = `debug ${type}`;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            output.appendChild(div);
+            console.log(message);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            debug('DOM loaded');
+            debug(`D3 version: ${d3?.version || 'NOT AVAILABLE'}`, d3 ? 'success' : 'error');
+            debug(`GraphVisualizer: ${typeof GraphVisualizer}`, typeof GraphVisualizer === 'function' ? 'success' : 'error');
+            
+            // Test URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const archiveName = urlParams.get('archive');
+            debug(`Archive parameter: ${archiveName}`, archiveName ? 'success' : 'error');
+            
+            if (archiveName && typeof GraphVisualizer === 'function') {
+                debug('Attempting to load archive...');
+                loadArchiveTest(archiveName);
+            }
+        });
+        
+        async function loadArchiveTest(archiveName) {
+            try {
+                const apiUrl = `${window.location.origin}/api/archive/${encodeURIComponent(archiveName)}`;
+                debug(`API URL: ${apiUrl}`);
+                
+                const response = await fetch(apiUrl);
+                debug(`Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                debug(`Data received: ${data.success ? 'SUCCESS' : 'FAILED'}`, data.success ? 'success' : 'error');
+                debug(`Nodes: ${data.nodes?.length || 0}, Graph nodes: ${data.graph_data?.nodes?.length || 0}`);
+                
+                // Display basic info
+                if (data.success) {
+                    document.getElementById('archive-content').innerHTML = `
+                        <h3>Archive Data</h3>
+                        <p><strong>Run Name:</strong> ${data.metadata?.run_name || 'N/A'}</p>
+                        <p><strong>Hypothesis:</strong> ${data.metadata?.hypothesis || 'N/A'}</p>
+                        <p><strong>Total Nodes:</strong> ${data.total_nodes || 0}</p>
+                        <p><strong>Graph Nodes:</strong> ${data.graph_data?.nodes?.length || 0}</p>
+                        <p><strong>Graph Links:</strong> ${data.graph_data?.links?.length || 0}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                debug(`Error: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

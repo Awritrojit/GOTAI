@@ -1,0 +1,74 @@
+[
+  {
+    "id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "parent_id": null,
+    "trajectory_id": "root",
+    "text": "Testing quick reasoning cycle for verification",
+    "score": 0.5,
+    "cumulative_score": 0.5,
+    "is_pruned": false,
+    "is_fully_explored": true,
+    "depth": 0,
+    "embedding": null
+  },
+  {
+    "id": "d4eda156-56cd-4d5b-8678-6bb72feaf21e",
+    "parent_id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "trajectory_id": "root",
+    "text": "<think>\nOkay, let's see. The user wants me to generate a concise, one-sentence outcome for the question \"Why is this the case?\" based on the statement: \"Testing quick reasoning cycle for verification.\"\n\nFirst, I need to break down the original statement. It says that testing a quick reasoning cycle for verification. So, the main elements here are \"testing,\" \"quick reasoning cycle,\" and \"verification.\"\n\nThe question is asking why this is the case. So the answer should explain",
+    "score": 0.38000000000000006,
+    "cumulative_score": 0.8800000000000001,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "707d9c3f-e929-4359-9a24-70dc0a0e0d8d",
+    "parent_id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "trajectory_id": "root",
+    "text": "<think>\nOkay, let's see. The user wants a concise, one-sentence outcome for the question \"What are the underlying assumptions?\" based on the statement \"Testing quick reasoning cycle for verification.\"\n\nFirst, I need to understand the statement. It's about testing a quick reasoning cycle for verification. So, the main elements here are testing, quick reasoning, and verification. The question is asking for the underlying assumptions, which are the unstated beliefs or factors that make a process work.\n\nThe statement",
+    "score": 0.38000000000000006,
+    "cumulative_score": 0.8800000000000001,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "4e78ecf6-152b-4b91-9bcd-0b4bbe2996c5",
+    "parent_id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "trajectory_id": "root",
+    "text": "<think>\nOkay, let's see. The user wants me to explain a statement differently. The statement given is \"Testing quick reasoning cycle for verification.\" So first, I need to break this down. The key components here are \"testing,\" \"quick reasoning cycle,\" and \"verification.\" \n\nThe task is to generate a concise, one-sentence outcome for the question \"How can this be explained differently?\" So essentially, I need to rephrase the original statement in a way that shows a different perspective",
+    "score": 0.38000000000000006,
+    "cumulative_score": 0.8800000000000001,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "bd93a076-a1c5-499d-8626-79624e37f060",
+    "parent_id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "trajectory_id": "root",
+    "text": "<think>\nOkay, the user provided a statement: \"Testing quick reasoning cycle for verification.\" And they want a one-sentence outcome for the question \"What is the primary consequence of this?\" \n\nFirst, I need to parse the statement. The phrase \"Testing quick reasoning cycle for verification\" suggests that the process involves testing quick reasoning steps for verification. The main action here is testing a quick reasoning cycle. The consequence would be the outcome of that process.\n\nSo, the key elements are testing and quick",
+    "score": 0.38000000000000006,
+    "cumulative_score": 0.8800000000000001,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "96d38f3e-2507-4db5-b243-8a727108e4ce",
+    "parent_id": "4826f5c2-f28d-465c-a2ff-df2b5b237ec6",
+    "trajectory_id": "root",
+    "text": "<think>\nOkay, so the user wants a one-sentence outcome based on the statement \"Testing quick reasoning cycle for verification.\" The question is \"Where would this have the biggest impact?\" \n\nFirst, I need to understand the statement. It's about testing a quick reasoning cycle for verification. So, testing a process to check if reasoning is correct quickly. The key here is that it's a quick process for verification. \n\nThe user is asking where this testing would have the biggest impact. The impact",
+    "score": 0.38000000000000006,
+    "cumulative_score": 0.8800000000000001,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  }
+]

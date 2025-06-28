@@ -99,7 +99,7 @@ got-ai-project/
 
 ```python
 # Configuration settings
-LOCAL_LLM_MODEL = "qwen:1.5b" # Model name for Ollama or other runners
+LOCAL_LLM_MODEL = "qwen3:0.6b" # Model name for Ollama or other runners
 VECTOR_DB_PATH = "./db_data"
 COLLECTION_NAME = "got_ai_knowledge"
 

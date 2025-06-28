@@ -1,0 +1,72 @@
+{
+  "hypothesis": "Test hypothesis 2",
+  "total_nodes": 4,
+  "average_score": 0.75,
+  "max_score": 0.9,
+  "min_score": 0.6,
+  "pruned_nodes": 0,
+  "explored_nodes": 0,
+  "max_depth": 1,
+  "average_depth": 0.75,
+  "total_trajectories": 3,
+  "best_trajectory": {
+    "cumulative_score": 0.0,
+    "path_length": 1,
+    "final_insight": "Test hypothesis 2",
+    "final_score": 0.9,
+    "path": [
+      {
+        "id": "root_2",
+        "text": "Test hypothesis 2",
+        "score": 0.9,
+        "depth": 0
+      }
+    ]
+  },
+  "trajectory_analysis": [
+    {
+      "endpoint_id": "child_2_0",
+      "cumulative_score": 0.0,
+      "final_score": 0.6,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "Child hypothesis 0",
+      "path_scores": [
+        0.9,
+        0.6
+      ]
+    },
+    {
+      "endpoint_id": "child_2_1",
+      "cumulative_score": 0.0,
+      "final_score": 0.7,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "Child hypothesis 1",
+      "path_scores": [
+        0.9,
+        0.7
+      ]
+    },
+    {
+      "endpoint_id": "child_2_2",
+      "cumulative_score": 0.0,
+      "final_score": 0.8,
+      "length": 2,
+      "is_pruned": false,
+      "final_insight": "Child hypothesis 2",
+      "path_scores": [
+        0.9,
+        0.8
+      ]
+    }
+  ],
+  "score_distribution": {
+    "high": 3,
+    "medium": 1,
+    "low": 0,
+    "high_percentage": 75.0,
+    "medium_percentage": 25.0,
+    "low_percentage": 0.0
+  }
+}

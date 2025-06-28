@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOT-AI Archive Viewer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .archive-viewer-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .archive-top-section {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .archive-header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            flex: 1;
+        }
+        
+        .archive-header-left {
+            flex: 1;
+        }
+        
+        .archive-header-right {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .archive-node-details {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            width: 400px;
+            flex-shrink: 0;
+        }
+        
+        .archive-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .archive-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .archive-metadata-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .metadata-item {
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .metadata-item strong {
+            color: #333;
+            margin-right: 8px;
+        }
+        
+        .analysis-summary-inline {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            font-size: 0.9rem;
+        }
+        
+        .analysis-summary-inline .summary-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .analysis-summary-inline .stat-item {
+            color: #666;
+        }
+        
+        .analysis-summary-inline .stat-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .header-node-inspector {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+        }
+        
+        .header-node-inspector h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .header-node-inspector::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .header-node-inspector::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .header-node-inspector::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        .header-node-inspector::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Use the loading message positioning from the original design */
+        .loading-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #c62828;
+            margin: 20px 0;
+        }
+        
+        /* Archive Analysis Results Scrollable Styling */
+        #analysis-summary, #archive-analysis-results {
+            height: 600px;
+            overflow-y: auto;
+            padding-right: 8px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            background: #fafafa;
+            padding: 12px;
+        }
+        
+        #analysis-summary::-webkit-scrollbar, #archive-analysis-results::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #analysis-summary::-webkit-scrollbar-track, #archive-analysis-results::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        #analysis-summary::-webkit-scrollbar-thumb, #archive-analysis-results::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        #analysis-summary::-webkit-scrollbar-thumb:hover, #archive-analysis-results::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        @media (max-width: 1024px) {
+            .archive-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .archive-sidebar {
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .archive-panel {
+                flex: 1;
+            }
+            
+            #archive-graph-container {
+                height: 500px;
+            }
+            
+            .archive-top-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .archive-node-details {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .archive-metadata-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .archive-sidebar {
+                flex-direction: column;
+            }
+            
+            .archive-title {
+                font-size: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .archive-top-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-node-inspector {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-viewer-container">
+        <div class="archive-top-section">
+            <div class="archive-header">
+                <div class="archive-title">
+                    <span id="archive-title-text">Loading Archive...</span>
+                    <span class="archive-badge">ARCHIVED</span>
+                </div>
+                
+                <div class="archive-metadata-compact">
+                    <div class="metadata-item">
+                        <strong>Hypothesis:</strong> <span id="hypothesis">Loading...</span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Archived:</strong> <span id="archived-date">Loading...</span>
+                    </div>
+                    <div class="analysis-summary-inline" id="analysis-summary-inline">
+                        <!-- Analysis summary will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="archive-node-details">
+                <div class="header-node-inspector">
+                    <h3>Node Details</h3>
+                    <div id="header-node-details">
+                        <p class="placeholder">Click on a node to view its details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="graph-section">
+                <h3>Reasoning Graph</h3>
+                <div id="graph-container">
+                    <div class="loading-message">
+                        <div>🔄 Loading archived graph...</div>
+                    </div>
+                    <svg id="graph-svg"></svg>
+                </div>
+                <div class="graph-controls">
+                    <button id="reset-zoom" class="btn btn-small">Reset Zoom</button>
+                    <label>
+                        <input type="checkbox" id="show-pruned" checked> Show Pruned Nodes
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="analysis-panel">
+                    <h3>Best Reasoning Path</h3>
+                    <div id="archive-analysis-results">
+                        <p class="placeholder">Loading trajectory analysis...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h4>Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>High Score (>0.7)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFC107;"></div>
+                <span>Medium Score (0.4-0.7)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #F44336;"></div>
+                <span>Low Score (<0.4)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color pruned"></div>
+                <span>Pruned Node</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/graph.js"></script>
+    <script>
+        // Debug logging
+        console.log('Archive viewer loading...');
+        console.log('D3 available:', typeof d3 !== 'undefined');
+        console.log('GraphVisualizer available:', typeof GraphVisualizer !== 'undefined');
+        
+        // Wait for all scripts to load
+        window.addEventListener('load', function() {
+            console.log('Window loaded. D3:', typeof d3, 'GraphVisualizer:', typeof GraphVisualizer);
+        });
+        
+        class ArchiveViewer {
+            constructor() {
+                this.baseURL = window.location.origin;
+                this.archiveName = null;
+                this.graph = null;
+                this.currentArchive = null;
+                
+                this.init();
+            }
+            
+            init() {
+                try {
+                    // Get archive name from URL parameters
+                    const urlParams = new URLSearchParams(window.location.search);
+                    this.archiveName = urlParams.get('archive');
+                    
+                    console.log('Archive name from URL:', this.archiveName);
+                    console.log('Window location:', window.location.href);
+                    console.log('Search params:', window.location.search);
+                    
+                    if (!this.archiveName) {
+                        this.showError('No archive specified in URL. Please provide an archive parameter.');
+                        return;
+                    }
+                    
+                    // Check if GraphVisualizer is available
+                    if (typeof GraphVisualizer === 'undefined') {
+                        console.error('GraphVisualizer is not defined - graph.js may not have loaded');
+                        this.showError('Graph visualization library not loaded. Please refresh the page.');
+                        return;
+                    }
+                    
+                    // Initialize graph
+                    console.log('Initializing GraphVisualizer...');
+                    this.graph = new GraphVisualizer('graph-svg');
+                    this.graph.setNodeClickHandler((nodeData) => this.displayNodeDetails(nodeData));
+                    console.log('GraphVisualizer initialized successfully');
+                
+                    // Load archive
+                    this.loadArchive();
+                    
+                    // Bind controls
+                    document.getElementById('reset-zoom').addEventListener('click', () => {
+                        if (this.graph) this.graph.resetZoom();
+                    });
+                    
+                    document.getElementById('show-pruned').addEventListener('change', (e) => {
+                        if (this.graph) this.graph.togglePrunedNodes(e.target.checked);
+                    });
+                    
+                } catch (error) {
+                    console.error('Error in init():', error);
+                    this.showError(`Initialization error: ${error.message}`);
+                }
+            }
+            
+            async loadArchive() {
+                try {
+                    console.log('Loading archive:', this.archiveName);
+                    
+                    // Show loading state
+                    const loadingMsg = document.querySelector('.loading-message');
+                    if (loadingMsg) {
+                        loadingMsg.style.display = 'block';
+                        loadingMsg.innerHTML = '<div>🔄 Loading archive data...</div>';
+                    }
+                    
+                    const apiUrl = `${this.baseURL}/api/archive/${encodeURIComponent(this.archiveName)}`;
+                    console.log('Fetching from:', apiUrl);
+                    
+                    const response = await fetch(apiUrl);
+                    console.log('Response received:', response.status, response.statusText);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to load archive: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    const archiveData = await response.json();
+                    console.log('Archive data received:', archiveData);
+                    
+                    if (!archiveData.success) {
+                        throw new Error(archiveData.error || 'Failed to load archive');
+                    }
+                    
+                    this.currentArchive = archiveData;
+                    
+                    // Update loading message
+                    if (loadingMsg) {
+                        loadingMsg.innerHTML = '<div>🔄 Rendering visualization...</div>';
+                    }
+                    
+                    this.displayArchiveData(archiveData);
+                    
+                } catch (error) {
+                    console.error('Error loading archive:', error);
+                    this.showError(`Error loading archive: ${error.message}`);
+                }
+            }
+            
+            displayArchiveData(archiveData) {
+                console.log('Displaying archive data...', archiveData);
+                
+                // Update page title
+                document.title = `Archive: ${archiveData.metadata.run_name} - GOT-AI`;
+                
+                // Update header information
+                document.getElementById('archive-title-text').textContent = archiveData.metadata.run_name || 'Unnamed Run';
+                document.getElementById('hypothesis').textContent = archiveData.metadata.hypothesis || 'No hypothesis provided';
+                document.getElementById('archived-date').textContent = new Date(archiveData.metadata.archived_at).toLocaleString();
+                
+                // Display inline analysis summary
+                this.displayInlineAnalysisSummary(archiveData.summary);
+                
+                console.log('Header updated');
+                
+                // Hide loading message
+                const loadingMsg = document.querySelector('.loading-message');
+                if (loadingMsg) {
+                    loadingMsg.style.display = 'none';
+                }
+                
+                // Render graph
+                if (archiveData.graph_data && archiveData.graph_data.nodes) {
+                    console.log('Updating graph with data:', archiveData.graph_data);
+                    try {
+                        this.graph.update(archiveData.graph_data);
+                        console.log('Graph updated successfully');
+                    } catch (error) {
+                        console.error('Error updating graph:', error);
+                        this.showError(`Error rendering graph: ${error.message}`);
+                        return;
+                    }
+                } else {
+                    console.warn('No graph data found in archive');
+                    document.getElementById('archive-graph-container').innerHTML = '<p>No graph data available for this archive</p>';
+                }
+                
+                // Load and display analysis trajectory
+                console.log('Loading trajectory analysis...');
+                this.loadArchiveAnalysis();
+                
+                console.log('Archive display complete');
+            }
+            
+            async loadArchiveAnalysis() {
+                try {
+                    const response = await fetch(`${this.baseURL}/api/archive/${encodeURIComponent(this.archiveName)}/analysis`);
+                    
+                    if (response.ok) {
+                        const analysisData = await response.json();
+                        console.log('Analysis data loaded:', analysisData);
+                        this.displayArchiveAnalysis(analysisData);
+                        
+                        // Highlight trajectory if available
+                        if (analysisData.best_trajectory && analysisData.best_trajectory.path) {
+                            this.highlightTrajectory(analysisData.best_trajectory.path);
+                        }
+                    } else {
+                        console.warn('No analysis data available for this archive');
+                        document.getElementById('archive-analysis-results').innerHTML = '<p class="placeholder">No trajectory analysis available for this archive</p>';
+                    }
+                } catch (error) {
+                    console.error('Error loading archive analysis:', error);
+                    document.getElementById('archive-analysis-results').innerHTML = '<p class="placeholder">Error loading trajectory analysis</p>';
+                }
+            }
+            
+            highlightTrajectory(trajectory) {
+                if (this.graph && trajectory) {
+                    console.log('Highlighting trajectory with', trajectory.length, 'nodes');
+                    this.graph.highlightTrajectory(trajectory.map(n => n.id));
+                }
+            }
+            
+            displayArchiveAnalysis(analysis) {
+                const container = document.getElementById('archive-analysis-results');
+                
+                if (!analysis.best_trajectory || !analysis.best_trajectory.path) {
+                    container.innerHTML = '<p class="placeholder">No trajectory data available</p>';
+                    return;
+                }
+                
+                const trajectory = analysis.best_trajectory;
+                
+                const html = `
+                    <div class="trajectory-summary">
+                        <div class="trajectory-stats">
+                            <p><strong>Cumulative Score:</strong> ${trajectory.cumulative_score.toFixed(3)}</p>
+                            <p><strong>Path Length:</strong> ${trajectory.path_length} steps</p>
+                        </div>
+                        <div class="final-insight">
+                            <h5>Final Insight:</h5>
+                            <p>${trajectory.final_insight}</p>
+                        </div>
+                        <div class="reasoning-path">
+                            <h5>Reasoning Path:</h5>
+                            ${trajectory.path.map((step, index) => `
+                                <div class="path-step" data-node-id="${step.id}" data-step-index="${index}">
+                                    <span class="step-number">${index + 1}.</span>
+                                    <span class="step-text">${step.text}</span>
+                                    <span class="step-score">(${step.score.toFixed(2)})</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+                
+                // Add hover interactions for trajectory steps
+                this.addTrajectoryHoverEvents();
+            }
+            
+            addTrajectoryHoverEvents() {
+                const pathSteps = document.querySelectorAll('.path-step');
+                
+                pathSteps.forEach(step => {
+                    const nodeId = step.dataset.nodeId;
+                    
+                    step.addEventListener('mouseenter', () => {
+                        // Highlight the corresponding node in the graph
+                        if (this.graph && nodeId) {
+                            this.graph.highlightNode(nodeId);
+                        }
+                        step.classList.add('highlighted');
+                    });
+                    
+                    step.addEventListener('mouseleave', () => {
+                        // Remove node highlight
+                        if (this.graph && nodeId) {
+                            this.graph.unhighlightNode(nodeId);
+                        }
+                        step.classList.remove('highlighted');
+                    });
+                    
+                    step.addEventListener('click', () => {
+                        // Focus on the node in the graph
+                        if (this.graph && nodeId) {
+                            this.graph.focusOnNode(nodeId);
+                        }
+                    });
+                });
+            }
+            
+            displayNodeDetails(nodeData) {
+                // Find full node data
+                const fullNode = this.currentArchive.nodes.find(n => n.id === nodeData.id);
+                
+                const nodeDetailsHtml = fullNode ? `
+                    <div class="node-detail">
+                        <h4>Node ${fullNode.id.substring(0, 8)}...</h4>
+                        <div class="detail-group">
+                            <strong>Text:</strong>
+                            <p>${fullNode.text || 'No text available'}</p>
+                        </div>
+                        <div class="detail-group">
+                            <strong>Score:</strong>
+                            <span class="score-value">${fullNode.score?.toFixed(3) || 'N/A'}</span>
+                        </div>
+                        <div class="detail-group">
+                            <strong>Created:</strong>
+                            <span>${fullNode.created_at ? new Date(fullNode.created_at).toLocaleString() : 'Unknown'}</span>
+                        </div>
+                        <div class="detail-group">
+                            <strong>Parent:</strong>
+                            <span>${fullNode.parent_id ? fullNode.parent_id.substring(0, 8) + '...' : 'Root node'}</span>
+                        </div>
+                        <div class="detail-group">
+                            <strong>Status:</strong>
+                            <span class="status-${fullNode.is_pruned ? 'pruned' : 'active'}">
+                                ${fullNode.is_pruned ? 'Pruned' : 'Active'}
+                            </span>
+                        </div>
+                    </div>
+                ` : '<p class="placeholder">Node details not found</p>';
+                
+                // Update both the original sidebar node details (if it exists) and header node details
+                const sidebarContainer = document.getElementById('node-details');
+                if (sidebarContainer) {
+                    sidebarContainer.innerHTML = nodeDetailsHtml;
+                }
+                
+                const headerContainer = document.getElementById('header-node-details');
+                if (headerContainer) {
+                    headerContainer.innerHTML = nodeDetailsHtml;
+                }
+            }
+            
+            displayInlineAnalysisSummary(summary) {
+                const container = document.getElementById('analysis-summary-inline');
+                
+                // If summary is empty or doesn't have the data we need, compute from nodes
+                if (!summary || Object.keys(summary).length === 0 || !summary.total_nodes) {
+                    summary = this.computeSummaryFromNodes();
+                }
+                
+                if (summary && summary.total_nodes > 0) {
+                    container.innerHTML = `
+                        <div class="summary-stats">
+                            <span class="stat-item">
+                                <span class="stat-value">${summary.total_nodes || 0}</span> Total Nodes
+                            </span>
+                            <span class="stat-item">
+                                <span class="stat-value">${summary.active_nodes || 0}</span> Active
+                            </span>
+                            <span class="stat-item">
+                                <span class="stat-value">${summary.pruned_nodes || 0}</span> Pruned
+                            </span>
+                            <span class="stat-item">
+                                Best Score: <span class="stat-value">${summary.best_score?.toFixed(3) || 'N/A'}</span>
+                            </span>
+                            <span class="stat-item">
+                                Max Depth: <span class="stat-value">${summary.max_depth || 0}</span>
+                            </span>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<span class="stat-item">No summary data available</span>';
+                }
+            }
+            
+            displaySummary(summary) {
+                const container = document.getElementById('analysis-summary');
+                
+                // If summary is empty or doesn't have the data we need, compute from nodes
+                if (!summary || Object.keys(summary).length === 0 || !summary.total_nodes) {
+                    summary = this.computeSummaryFromNodes();
+                }
+                
+                if (summary && summary.total_nodes > 0) {
+                    container.innerHTML = `
+                        <div class="summary-content">
+                            <div class="summary-stat">
+                                <span class="label">Total Nodes:</span>
+                                <span class="value">${summary.total_nodes || 0}</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="label">Active Nodes:</span>
+                                <span class="value">${summary.active_nodes || 0}</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="label">Pruned Nodes:</span>
+                                <span class="value">${summary.pruned_nodes || 0}</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="label">Best Score:</span>
+                                <span class="value">${summary.best_score?.toFixed(3) || 'N/A'}</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="label">Average Score:</span>
+                                <span class="value">${summary.average_score?.toFixed(3) || 'N/A'}</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="label">Max Depth:</span>
+                                <span class="value">${summary.max_depth || 0}</span>
+                            </div>
+                            ${summary.insights ? `
+                                <div class="summary-insights">
+                                    <h4>Insights:</h4>
+                                    <p>${summary.insights}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<p class="placeholder">No summary data available</p>';
+                }
+            }
+            
+            computeSummaryFromNodes() {
+                if (!this.currentArchive || !this.currentArchive.nodes) {
+                    return null;
+                }
+                
+                const nodes = this.currentArchive.nodes;
+                const totalNodes = nodes.length;
+                const activeNodes = nodes.filter(n => !n.is_pruned).length;
+                const prunedNodes = nodes.filter(n => n.is_pruned).length;
+                
+                const scores = nodes.map(n => n.score).filter(s => s !== null && s !== undefined);
+                const bestScore = scores.length > 0 ? Math.max(...scores) : null;
+                const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+                
+                const depths = nodes.map(n => n.depth || 0);
+                const maxDepth = depths.length > 0 ? Math.max(...depths) : 0;
+                
+                return {
+                    total_nodes: totalNodes,
+                    active_nodes: activeNodes,
+                    pruned_nodes: prunedNodes,
+                    best_score: bestScore,
+                    average_score: averageScore,
+                    max_depth: maxDepth
+                };
+            }
+            
+            showError(message) {
+                const container = document.querySelector('.archive-viewer-container');
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h3>Error Loading Archive</h3>
+                        <p>${message}</p>
+                        <button onclick="window.close()" class="btn-archive">Close Tab</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize when DOM is loaded and all scripts are ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            console.log('D3 version:', d3?.version || 'not available');
+            console.log('GraphVisualizer:', typeof GraphVisualizer);
+            
+            // Add global error handler
+            window.addEventListener('error', function(e) {
+                console.error('Global error:', e.error, e.filename, e.lineno);
+                document.querySelector('.archive-viewer-container').innerHTML = `
+                    <div class="error-message">
+                        <h3>JavaScript Error</h3>
+                        <p>Error: ${e.error?.message || 'Unknown error'}</p>
+                        <p>File: ${e.filename}</p>
+                        <p>Line: ${e.lineno}</p>
+                        <p>Please check the browser console for more details.</p>
+                    </div>
+                `;
+            });
+            
+            // Small delay to ensure all scripts are loaded
+            setTimeout(() => {
+                try {
+                    if (typeof GraphVisualizer === 'undefined') {
+                        throw new Error('GraphVisualizer class not found - graph.js may not have loaded');
+                    }
+                    
+                    if (typeof d3 === 'undefined') {
+                        throw new Error('D3.js library not found - CDN may be blocked');
+                    }
+                    
+                    console.log('Creating ArchiveViewer...');
+                    new ArchiveViewer();
+                    console.log('ArchiveViewer created successfully');
+                } catch (error) {
+                    console.error('Error creating ArchiveViewer:', error);
+                    document.querySelector('.archive-viewer-container').innerHTML = `
+                        <div class="error-message">
+                            <h3>Initialization Error</h3>
+                            <p>Failed to initialize archive viewer: ${error.message}</p>
+                            <p>Please check the browser console for more details.</p>
+                            <button onclick="location.reload()" class="btn-archive">Reload Page</button>
+                        </div>
+                    `;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

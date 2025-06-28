@@ -1,0 +1,50 @@
+[
+  {
+    "id": "root_2",
+    "parent_id": null,
+    "trajectory_id": "root",
+    "text": "Test hypothesis 2",
+    "score": 0.9,
+    "cumulative_score": 0.0,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 0,
+    "embedding": null
+  },
+  {
+    "id": "child_2_0",
+    "parent_id": "root_2",
+    "trajectory_id": "traj_2_0",
+    "text": "Child hypothesis 0",
+    "score": 0.6,
+    "cumulative_score": 0.0,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "child_2_1",
+    "parent_id": "root_2",
+    "trajectory_id": "traj_2_1",
+    "text": "Child hypothesis 1",
+    "score": 0.7,
+    "cumulative_score": 0.0,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  },
+  {
+    "id": "child_2_2",
+    "parent_id": "root_2",
+    "trajectory_id": "traj_2_2",
+    "text": "Child hypothesis 2",
+    "score": 0.8,
+    "cumulative_score": 0.0,
+    "is_pruned": false,
+    "is_fully_explored": false,
+    "depth": 1,
+    "embedding": null
+  }
+]
