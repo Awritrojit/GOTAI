@@ -1,4 +1,4 @@
-# GOT-AI: Graph of Thoughts Autonomous Reasoning Framework
+# GOTAI: Graph of Thoughts Autonomous Reasoning Framework
 
 **Build an autonomous AI reasoning system that explores branching trajectories of thought**
 
